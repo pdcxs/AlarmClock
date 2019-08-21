@@ -1,0 +1,135 @@
+﻿<Window x:Class="AlarmClock.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:local="clr-namespace:AlarmClock"
+        xmlns:commands="clr-namespace:AlarmClock.Commands"
+        mc:Ignorable="d"
+        StateChanged="WindowState_Changed"
+        ResizeMode="CanMinimize"
+        Title="整点报时器" Height="520" Width="420" Icon="clock.ico">
+    <StackPanel>
+        <tb:TaskbarIcon
+            x:Name="MyNotifyIcon"
+            Loaded="Notifier_Loaded"
+            IconSource="/clock.ico"
+            ToolTipText="整点报时器"
+            TrayMouseDoubleClick="ShowWindow">
+
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="show_MenuItem"
+                              Header="设置"
+                              Command="{commands:ShowConfigWindowCommand}"
+                              CommandParameter="{Binding}"/>
+
+                    <Separator />
+
+                    <MenuItem x:Name="close_MenuItem"
+                              Header="退出"
+                              Command="{commands:QuitCommand}"
+                              CommandParameter="{Binding}"/>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+
+        </tb:TaskbarIcon>
+
+        <Border Padding="10">
+            <StackPanel>
+                <TextBlock Text="报时间隔（分钟）"/>
+                <ComboBox x:Name="delay_Combo"
+                          Margin="0 5 0 10"
+                          SelectionChanged="Delay_Combo_SelectionChanged">
+                </ComboBox>
+                <TextBlock Text="演讲人"/>
+                <ComboBox x:Name="speaker_Combo" Margin="0 5 0 10" SelectionChanged="Speaker_Combo_SelectionChanged"></ComboBox>
+
+                <TextBlock Text="精度（秒）"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Slider x:Name="precision_Slider" Minimum="1" Maximum="60" Grid.Column="0" ValueChanged="PrecisionChanged" SmallChange="1" LargeChange="10" IsSnapToTickEnabled="True"/>
+                    <TextBlock Background="#eee" Grid.Column="1" Text="{Binding ElementName=precision_Slider,Path=Value}" TextAlignment="Center" Margin="5 0 0 0"/>
+                </Grid>
+
+                <TextBlock Text="声音大小" Margin="0 10 0 5"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Slider x:Name="volume_Slider" Minimum="0" Maximum="100" Grid.Column="0" ValueChanged="VolumeChanged" SmallChange="1" LargeChange="10" IsSnapToTickEnabled="True"/>
+                    <TextBlock Background="#eee" Grid.Column="1" Text="{Binding ElementName=volume_Slider,Path=Value}" TextAlignment="Center" Margin="5 0 0 0"/>
+                </Grid>
+
+                <TextBlock Text="声音速度" Margin="0 10 0 5"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Slider x:Name="rate_Slider" Minimum="-10" Maximum="10" Grid.Column="0" ValueChanged="RateChanged" SmallChange="1" LargeChange="10" IsSnapToTickEnabled="True"/>
+                    <TextBlock Background="#eee" Grid.Column="1" Text="{Binding ElementName=rate_Slider,Path=Value}" TextAlignment="Center" Margin="5 0 0 0"/>
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox x:Name="twelve_Check" Margin="0 10" Content="十二小时制" Click="Twelve_CheckChange"/>
+                    <CheckBox x:Name="halfCall_Check" Margin="0 10" Content="整点、半点不读分钟" Grid.Column="1" Click="HalfCall_CheckChange"/>
+                </Grid>
+
+                <TextBlock Text="时间前缀（小时）" Margin="0 10 0 5"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Slider x:Name="hour_Slider" Minimum="0" Maximum="23" Grid.Column="0" SmallChange="1" LargeChange="1" IsSnapToTickEnabled="True" ValueChanged="HourSliderChanged"/>
+                    <TextBlock Background="#eee" Text="{Binding ElementName=hour_Slider,Path=Value}" TextAlignment="Center" Grid.Column="1"/>
+                    <ComboBox x:Name="timeName_Combo" Grid.Column="2" Margin="5 0 0 0" SelectionChanged="TimeNameChanged"/>
+                </Grid>
+
+                <TextBlock Text="声音前缀" Margin="0 10 0 5"/>
+                <TextBox x:Name="speechHead_Text" TextChanged="SpeechHeadChanged"/>
+
+                <TextBlock Text="声音后缀（小时）" Margin="0 10 0 5"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Slider x:Name="hourTail_Slider" Minimum="0" Maximum="23" Grid.Column="0" SmallChange="1" LargeChange="1" IsSnapToTickEnabled="True" ValueChanged="HourTailSliderChanged"/>
+                    <TextBlock Background="#eee" Text="{Binding ElementName=hourTail_Slider,Path=Value}" TextAlignment="Center" Grid.Column="1"/>
+                    <TextBox x:Name="speechTail_Text" Grid.Column="2" Margin="4.5,0,0,0" TextChanged="SpeechTailChanged" Height="18" VerticalAlignment="Bottom"/>
+                </Grid>
+
+                <Grid Margin="0 15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button x:Name="test_Button" Content="测试" Margin="0 0 10 0" Click="TestButtonClick"/>
+                    <Button x:Name="apply_Button" Content="保存" Margin="10 0 0 0" Grid.Column="1" Click="SaveButtonClick"/>
+                    <Button x:Name="reset_Button" Content="重置" Margin="0 5 10 0" Grid.Column="0" Click="ResetButtonClick" Grid.Row="1"/>
+                    <Button x:Name="quit_Button" Content="退出" Margin="10 5 0 0" Grid.Column="1" Click="QuitButtonClick" Grid.Row="1"/>
+                </Grid>
+
+            </StackPanel>
+
+        </Border>
+
+    </StackPanel>
+</Window>
