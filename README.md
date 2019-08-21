@@ -2,7 +2,7 @@
 
 这是一个基于WPF的整点报时小程序（仅支持Windows系统，需要.Net 4+）。
 
-下载：
+应用下载：[Last Version](https://github.com/pdcxs/AlarmClock/blob/master/Releases/AlarmClock_v1.0.zip)
 
 在Release文件夹下有压缩文件，下载后解压及可直接使用。
 
