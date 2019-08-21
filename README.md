@@ -4,9 +4,11 @@
 
 使用方法：
 
-程序启动后会自动最小化到系统托盘，图标为：![clock](Images/clock.png)
+程序启动后会自动最小化到系统托盘，图标为：<img src="Images/clock.png" width="45">
 
-双击图标或者右键->设置，会打开设置窗口，窗口界面为：![interface](Images/interface.png)
+双击图标或者右键->设置，会打开设置窗口，窗口界面为：
+
+<img src="Images/interface.png" width="500">
 
 其中，演讲人会自动从系统获得，但是不是所有人都能说中文，需要点击测试按钮进行测试。
 
